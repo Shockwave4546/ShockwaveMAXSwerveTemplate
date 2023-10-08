@@ -26,6 +26,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.OneWheelSwerve;
+import frc.shuffleboard.GlobalTab;
 import frc.shuffleboard.ShuffleboardDouble;
 import frc.shuffleboard.ShuffleboardSpeed;
 
@@ -38,10 +39,9 @@ import java.util.List;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final ShuffleboardTab tab = Shuffleboard.getTab("Test");
   // The robot's subsystems
   private final OneWheelSwerve m_robotDrive = new OneWheelSwerve();
-  private final ShuffleboardDouble wantAngle = new ShuffleboardSpeed("Want Angle", 0.0).withMinMax(0.0, 360.0);
+  private final ShuffleboardDouble wantAngle = new ShuffleboardSpeed("Want Angle", 0.0);
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -53,7 +53,7 @@ public class RobotContainer {
     // Configure the button bindings
 //    configureButtonBindings();
 
-    tab.add("Set Rot", new RunCommand(() -> {
+    GlobalTab.DEBUG.add("Set Rot", new RunCommand(() -> {
       m_robotDrive.setAngleDegrees(wantAngle.get());
     }, m_robotDrive));
     // Configure default commands

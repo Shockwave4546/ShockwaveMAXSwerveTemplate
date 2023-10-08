@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.shuffleboard.GlobalTab;
 import frc.utils.SwerveUtils;
 
 public class OneWheelSwerve extends SubsystemBase {
@@ -15,6 +16,10 @@ public class OneWheelSwerve extends SubsystemBase {
       7,
       5,
       0);
+
+  public OneWheelSwerve() {
+    GlobalTab.DEBUG.addNumber("Angle", () -> module.getPosition().angle.getDegrees());
+  }
 
   public void drive(double xSpeed, double ySpeed, double rot) {
 
