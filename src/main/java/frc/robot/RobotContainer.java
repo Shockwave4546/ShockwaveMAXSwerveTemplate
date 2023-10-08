@@ -41,7 +41,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final OneWheelSwerve m_robotDrive = new OneWheelSwerve();
-  private final ShuffleboardDouble wantAngle = new ShuffleboardSpeed("Want Angle", 0.0);
+  private final ShuffleboardDouble wantAngle = new ShuffleboardDouble("Want Angle", 0.0).withMinMax(0.0, 360.0);
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
