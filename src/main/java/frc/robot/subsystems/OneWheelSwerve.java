@@ -3,13 +3,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.shuffleboard.GlobalTab;
-import frc.utils.SwerveUtils;
 
 public class OneWheelSwerve extends SubsystemBase {
   private final MAXSwerveModule module = new MAXSwerveModule(
@@ -37,7 +34,7 @@ public class OneWheelSwerve extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * Constants.DriveConstants.MAX_SPEED_METERS_PER_SECOND;
     double rotDelivered = m_currentRotation * Constants.DriveConstants.MAX_ANGULAR_SPEED;
 
-    var swerveModuleStates = Constants.DriveConstants.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+    var swerveModuleStates = Constants.DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, Constants.DriveConstants.MAX_SPEED_METERS_PER_SECOND);
     module.setDesiredState(swerveModuleStates[0]);
