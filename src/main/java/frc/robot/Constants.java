@@ -50,16 +50,29 @@ public final class Constants {
     public static final double BACK_LEFT_CHASSIS_ANGULAR_OFFSET = Math.PI;
     public static final double BACK_RIGHT_CHASSIS_ANGULAR_OFFSET = Math.PI / 2;
 
-    // SPARK MAX CAN IDs
-    public static final int FRONT_LEFT_DRIVING_CAN_ID = 11;
-    public static final int REAR_LEFT_DRIVING_CAN_ID = 13;
-    public static final int FRONT_RIGHT_DRIVING_CAN_ID = 15;
-    public static final int REAR_RIGHT_DRIVING_CAN_ID = 17;
+    /**
+     *  Front Left         Front Right
+     * <p>
+     *                x
+     * <p>
+     *  Back Left          Back Right
+     */
 
-    public static final int FRONT_LEFT_TURNING_CAN_ID = 10;
-    public static final int REAR_LEFT_TURNING_CAN_ID = 12;
-    public static final int FRONT_RIGHT_TURNING_CAN_ID = 14;
-    public static final int REAR_RIGHT_TURNING_CAN_ID = 16;
+    /**
+     * Driving Motor Prefix = 1x
+     */
+    public static final int FRONT_RIGHT_DRIVING_CAN_ID = 10;
+    public static final int BACK_RIGHT_DRIVING_CAN_ID = 11;
+    public static final int BACK_LEFT_DRIVING_CAN_ID = 12;
+    public static final int FRONT_LEFT_DRIVING_CAN_ID = 13;
+
+    /**
+     * Turning Motor Prefix = 2x
+     */
+    public static final int FRONT_RIGHT_TURNING_CAN_ID = 20;
+    public static final int BACK_RIGHT_TURNING_CAN_ID = 21;
+    public static final int BACK_LEFT_TURNING_CAN_ID = 22;
+    public static final int FRONT_LEFT_TURNING_CAN_ID = 23;
 
     public static final boolean GYRO_REVERSED = false;
   }
@@ -115,7 +128,7 @@ public final class Constants {
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 20; // amps
   }
 
-  public static final class OIConstants {
+  public static final class IOConstants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final double DRIVE_DEADBAND = 0.05;
   }

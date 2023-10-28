@@ -4,14 +4,15 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.*;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
-
 import frc.robot.Constants.ModuleConstants;
 
 public class MAXSwerveModule {
@@ -79,7 +80,7 @@ public class MAXSwerveModule {
     drivingPIDController.setD(ModuleConstants.DRIVING_D);
     drivingPIDController.setFF(ModuleConstants.DRIVING_FF);
     drivingPIDController.setOutputRange(ModuleConstants.DRIVING_MIN_OUTPUT,
-        ModuleConstants.DRIVING_MAX_OUTPUT);
+            ModuleConstants.DRIVING_MAX_OUTPUT);
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
@@ -88,7 +89,7 @@ public class MAXSwerveModule {
     turningPIDController.setD(ModuleConstants.TURNING_D);
     turningPIDController.setFF(ModuleConstants.TURNING_FF);
     turningPIDController.setOutputRange(ModuleConstants.TURNING_MIN_OUTPUT,
-        ModuleConstants.TURNING_MAX_OUTPUT);
+            ModuleConstants.TURNING_MAX_OUTPUT);
 
     drivingSparkMax.setIdleMode(ModuleConstants.DRIVING_MOTOR_IDLE_MODE);
     turningSparkMax.setIdleMode(ModuleConstants.TURNING_MOTOR_IDLE_MODE);
@@ -114,7 +115,7 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModuleState(drivingEncoder.getVelocity(),
-        new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
+            new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
   }
 
   /**
@@ -126,8 +127,8 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModulePosition(
-        drivingEncoder.getPosition(),
-        new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
+            drivingEncoder.getPosition(),
+            new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
   }
 
   /**
@@ -143,7 +144,7 @@ public class MAXSwerveModule {
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
-        new Rotation2d(turningEncoder.getPosition()));
+            new Rotation2d(turningEncoder.getPosition()));
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);

@@ -4,18 +4,17 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 
 public class DriveSubsystem extends SubsystemBase {
-  // Create MAXSwerveModules
   private final MAXSwerveModule frontLeft = new MAXSwerveModule(
           DriveConstants.FRONT_LEFT_DRIVING_CAN_ID,
           DriveConstants.FRONT_LEFT_TURNING_CAN_ID,
@@ -26,18 +25,18 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.FRONT_RIGHT_TURNING_CAN_ID,
           DriveConstants.FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET);
 
-  private final MAXSwerveModule rearLeft = new MAXSwerveModule(
-          DriveConstants.REAR_LEFT_DRIVING_CAN_ID,
-          DriveConstants.REAR_LEFT_TURNING_CAN_ID,
+  private final MAXSwerveModule backLeft = new MAXSwerveModule(
+          DriveConstants.BACK_LEFT_DRIVING_CAN_ID,
+          DriveConstants.BACK_LEFT_TURNING_CAN_ID,
           DriveConstants.BACK_LEFT_CHASSIS_ANGULAR_OFFSET);
 
-  private final MAXSwerveModule rearRight = new MAXSwerveModule(
-          DriveConstants.REAR_RIGHT_DRIVING_CAN_ID,
-          DriveConstants.REAR_RIGHT_TURNING_CAN_ID,
+  private final MAXSwerveModule backRight = new MAXSwerveModule(
+          DriveConstants.BACK_RIGHT_DRIVING_CAN_ID,
+          DriveConstants.BACK_RIGHT_TURNING_CAN_ID,
           DriveConstants.BACK_RIGHT_CHASSIS_ANGULAR_OFFSET);
 
   // The gyro sensor
-  private final ADIS16470_IMU gyro = new ADIS16470_IMU();
+  private final AHRS gyro = new AHRS();
 
   // Slew rate filter variables for controlling lateral acceleration
   private double currentRotation = 0.0;
@@ -55,24 +54,24 @@ public class DriveSubsystem extends SubsystemBase {
           new SwerveModulePosition[] {
                   frontLeft.getPosition(),
                   frontRight.getPosition(),
-                  rearLeft.getPosition(),
-                  rearRight.getPosition()
+                  backLeft.getPosition(),
+                  backRight.getPosition()
           });
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+
   }
 
-  @Override
-  public void periodic() {
+  @Override public void periodic() {
     // Update the odometry in the periodic block
     odometry.update(
             Rotation2d.fromDegrees(gyro.getAngle()),
             new SwerveModulePosition[] {
                     frontLeft.getPosition(),
                     frontRight.getPosition(),
-                    rearLeft.getPosition(),
-                    rearRight.getPosition()
+                    backLeft.getPosition(),
+                    backRight.getPosition()
             });
   }
 
@@ -83,6 +82,13 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Pose2d getPose() {
     return odometry.getPoseMeters();
+  }
+
+  public void setAngleDegrees(double angleDegrees) {
+    frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(angleDegrees)));
+    frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-1 * angleDegrees)));
+    backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-1 * angleDegrees)));
+    backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(angleDegrees)));
   }
 
   /**
@@ -96,8 +102,8 @@ public class DriveSubsystem extends SubsystemBase {
             new SwerveModulePosition[] {
                     frontLeft.getPosition(),
                     frontRight.getPosition(),
-                    rearLeft.getPosition(),
-                    rearRight.getPosition()
+                    backLeft.getPosition(),
+                    backRight.getPosition()
             },
             pose);
   }
@@ -113,7 +119,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rateLimit     Whether to enable rate limiting for smoother control.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
-
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -178,8 +183,8 @@ public class DriveSubsystem extends SubsystemBase {
             swerveModuleStates, DriveConstants.MAX_SPEED_METERS_PER_SECOND);
     frontLeft.setDesiredState(swerveModuleStates[0]);
     frontRight.setDesiredState(swerveModuleStates[1]);
-    rearLeft.setDesiredState(swerveModuleStates[2]);
-    rearRight.setDesiredState(swerveModuleStates[3]);
+    backLeft.setDesiredState(swerveModuleStates[2]);
+    backRight.setDesiredState(swerveModuleStates[3]);
   }
 
   /**
@@ -188,8 +193,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void setX() {
     frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
   /**
@@ -202,16 +207,16 @@ public class DriveSubsystem extends SubsystemBase {
             desiredStates, DriveConstants.MAX_SPEED_METERS_PER_SECOND);
     frontLeft.setDesiredState(desiredStates[0]);
     frontRight.setDesiredState(desiredStates[1]);
-    rearLeft.setDesiredState(desiredStates[2]);
-    rearRight.setDesiredState(desiredStates[3]);
+    backLeft.setDesiredState(desiredStates[2]);
+    backRight.setDesiredState(desiredStates[3]);
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
     frontLeft.resetEncoders();
-    rearLeft.resetEncoders();
+    backLeft.resetEncoders();
     frontRight.resetEncoders();
-    rearRight.resetEncoders();
+    backRight.resetEncoders();
   }
 
   /** Zeroes the heading of the robot. */

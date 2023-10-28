@@ -1,0 +1,27 @@
+package frc.robot.commands;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.IOConstants;
+import frc.robot.subsystems.DriveSubsystem;
+
+public class SwerveDriveCommand extends CommandBase {
+  private final CommandXboxController controller;
+  private final DriveSubsystem drive;
+
+  public SwerveDriveCommand(CommandXboxController controller, DriveSubsystem drive) {
+    this.controller = controller;
+    this.drive = drive;
+  }
+
+  @Override public void initialize() {
+    drive.drive(
+            -MathUtil.applyDeadband(controller.getLeftY(), IOConstants.DRIVE_DEADBAND),
+            -MathUtil.applyDeadband(controller.getLeftX(), IOConstants.DRIVE_DEADBAND),
+            -MathUtil.applyDeadband(controller.getRightX(), IOConstants.DRIVE_DEADBAND),
+            true,
+            true
+    );
+  }
+}
