@@ -76,12 +76,11 @@ public class DriveSubsystem extends SubsystemBase {
                   backRight.getPosition()
           });
 
-  private final ShuffleboardDouble pTurn = new ShuffleboardDouble("Turning P", 0.1);
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    final var layout = tab.getLayout("Information");
-    layout.addNumber("Current Rotation (Degrees)", () -> Math.toDegrees(currentRotation));
+    // final var layout = tab.getLayout("Information");
+    // layout.addNumber("Current Rotation (Degrees)", () -> Math.toDegrees(currentRotation));
 
   }
 
