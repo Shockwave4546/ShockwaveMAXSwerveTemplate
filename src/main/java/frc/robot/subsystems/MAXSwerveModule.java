@@ -13,7 +13,9 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.ModuleConstants;
 import frc.shuffleboard.TunableSparkMaxPIDController;
 
@@ -34,7 +36,7 @@ public class MAXSwerveModule {
    * Encoder.
    */
   @SuppressWarnings("resource")
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, boolean invertDrivingDirection, ShuffleboardLayout layout) {
+  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, boolean invertDrivingDirection, ShuffleboardLayout parentLayout) {
     final var drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     final var turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
 
@@ -109,16 +111,25 @@ public class MAXSwerveModule {
     desiredState.angle = new Rotation2d(turningEncoder.getPosition());
     drivingEncoder.setPosition(0);
 
-    layout.add("Drive ID", drivingCANId);
-    layout.add("Turn ID", turningCANId);
-    layout.addNumber("Relative Angle (Degrees)", getPosition().angle::getDegrees);
-    layout.add("Driving PID Controller", new TunableSparkMaxPIDController(drivingPIDController));
-    layout.add("Turning PID Controller", new TunableSparkMaxPIDController(turningPIDController));
-    layout.addNumber("(Drive) Applied Duty Cycle", drivingSparkMax::getAppliedOutput);
-    layout.addNumber("(Drive) Temperature", drivingSparkMax::getMotorTemperature);
-    layout.addNumber("(Turn) Applied Duty Cycle", turningSparkMax::getAppliedOutput);
-    layout.addNumber("(Turn) Temperature", turningSparkMax::getMotorTemperature);
-    layout.withSize(3, 8);
+    /*
+     * For debugging
+     */
+    final var driveLayout = parentLayout.getLayout("Drive", BuiltInLayouts.kList);
+    driveLayout.add("ID", drivingCANId);
+    driveLayout.addNumber("Applied Duty Cycle", drivingSparkMax::getAppliedOutput);
+    driveLayout.addNumber("Applied Amperage", drivingSparkMax::getOutputCurrent);
+    driveLayout.addNumber("Temperature (C)", drivingSparkMax::getMotorTemperature);
+    driveLayout.add("PID Controller", new TunableSparkMaxPIDController(drivingPIDController));
+
+    final var turningLayout = parentLayout.getLayout("Turning", BuiltInLayouts.kList);
+    turningLayout.add("ID", turningCANId);
+    turningLayout.addNumber("Relative Angle (Degrees)", getPosition().angle::getDegrees);
+    turningLayout.addNumber("Applied Duty Cycle", turningSparkMax::getAppliedOutput);
+    turningLayout.addNumber("Applied Amperage", turningSparkMax::getOutputCurrent);
+    turningLayout.addNumber("Temperature", turningSparkMax::getMotorTemperature);
+    turningLayout.add("Turning PID Controller", new TunableSparkMaxPIDController(turningPIDController));
+
+    parentLayout.withSize(3, 8);
   }
 
   /**

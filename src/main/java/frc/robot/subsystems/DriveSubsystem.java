@@ -85,13 +85,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   @Override public void periodic() {
-//    if (frontRight.turningPIDController.getP() != pTurn.get()) {
-//      frontRight.turningPIDController.setP(pTurn.get());
-//      frontLeft.turningPIDController.setP(pTurn.get());
-//      backRight.turningPIDController.setP(pTurn.get());
-//      backLeft.turningPIDController.setP(pTurn.get());
-//    }
-
     // Update the odometry in the periodic block
     odometry.update(
             Rotation2d.fromDegrees(gyro.getAngle()),

@@ -26,6 +26,8 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
+
+    // TODO: 11/5/2023 Remove multiplier when the robot is good.
     public static final double MAX_SPEED_METERS_PER_SECOND = 4.8 * 0.5;
     public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
 
@@ -47,8 +49,8 @@ public final class Constants {
     // Angular offsets of the modules relative to the chassis in radians
     public static final double FRONT_LEFT_CHASSIS_ANGULAR_OFFSET = -Math.PI / 2 - Math.PI/ 2;
     public static final double FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET = -Math.PI / 2;
-    public static final double BACK_LEFT_CHASSIS_ANGULAR_OFFSET = Math.PI - Math.PI/ 2;
-    public static final double BACK_RIGHT_CHASSIS_ANGULAR_OFFSET = Math.PI / 2 - Math.PI/ 2;
+    public static final double BACK_LEFT_CHASSIS_ANGULAR_OFFSET = Math.PI - Math.PI / 2;
+    public static final double BACK_RIGHT_CHASSIS_ANGULAR_OFFSET = 0.0;
 
     /**
      *  Front Left         Front Right
@@ -114,7 +116,7 @@ public final class Constants {
     public static final double DRIVING_MIN_OUTPUT = -1;
     public static final double DRIVING_MAX_OUTPUT = 1;
 
-    public static final double TURNING_P = 0.25;
+    public static final double TURNING_P = 1.0;
     public static final double TURNING_I = 0;
     public static final double TURNING_D = 0;
     public static final double TURNING_FF = 0;
