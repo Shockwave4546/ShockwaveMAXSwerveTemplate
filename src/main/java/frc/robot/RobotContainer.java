@@ -1,48 +1,20 @@
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IOConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.shuffleboard.GlobalTab;
-import frc.shuffleboard.ShuffleboardDouble;
-
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class RobotContainer {
   protected final DriveSubsystem drive = new DriveSubsystem();
   protected final CommandXboxController driverController = new CommandXboxController(IOConstants.DRIVER_CONTROLLER_PORT);
-  private final ShuffleboardDouble wantAngle = new ShuffleboardDouble("Want Angle", 0.0).withMinMax(0.0, 360.0);
 
   public RobotContainer() {
     configureButtonBindings();
-
-    final ShuffleboardLayout testLayout = GlobalTab.DEBUG
-            .getLayout("Test Layout", BuiltInLayouts.kList)
-            .withSize(2, 2)
-            .withProperties(Map.of("Label Position", "HIDDEN"));
-
-    final PIDController controller = new PIDController(1, 1, 1);
-
-    testLayout.addNumber("Test", () -> ThreadLocalRandom.current().nextDouble());
-    testLayout.add("Want Angle", wantAngle.getRaw());
-    testLayout.add("Test PID", controller);
-
-    GlobalTab.DEBUG.add("Set Rot", new RunCommand(() -> {
-      drive.setAngleDegrees(wantAngle.get());
-    }, drive));
-
-    
   }
 
   private void configureButtonBindings() {
     driverController.a().onTrue(new RunCommand(drive::setX, drive));
-    // TODO: 10/28/2023
   }
 
 //  /**

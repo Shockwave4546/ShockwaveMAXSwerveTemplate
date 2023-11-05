@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import frc.robot.Constants.ModuleConstants;
+import frc.shuffleboard.TunableSparkMaxPIDController;
 
 public class MAXSwerveModule {
   private final RelativeEncoder drivingEncoder;
@@ -110,8 +111,9 @@ public class MAXSwerveModule {
 
     layout.add("Drive ID", drivingCANId);
     layout.add("Turn ID", turningCANId);
-//    layout.add("Driving PID Controller", drivingPIDController);
-//    layout.add("Turning PID Controller", turningPIDController);
+    layout.addNumber("Relative Angle (Degrees)", getPosition().angle::getDegrees);
+    layout.add("Driving PID Controller", new TunableSparkMaxPIDController(drivingPIDController));
+    layout.add("Turning PID Controller", new TunableSparkMaxPIDController(turningPIDController));
     layout.addNumber("(Drive) Applied Duty Cycle", drivingSparkMax::getAppliedOutput);
     layout.addNumber("(Drive) Temperature", drivingSparkMax::getMotorTemperature);
     layout.addNumber("(Turn) Applied Duty Cycle", turningSparkMax::getAppliedOutput);

@@ -80,6 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    final var layout = tab.getLayout("Information");
+    layout.addNumber("Current Rotation (Degrees)", () -> Math.toDegrees(currentRotation));
 
   }
 
