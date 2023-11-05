@@ -110,12 +110,12 @@ public class MAXSwerveModule {
 
     layout.add("Drive ID", drivingCANId);
     layout.add("Turn ID", turningCANId);
-    layout.add("Driving PID Controller", drivingPIDController);
-    layout.add("Turning PID Controller", turningPIDController);
-    layout.add("(Drive) Applied Duty Cycle", drivingSparkMax.getAppliedOutput());
-    layout.add("(Drive) Temperature", drivingSparkMax.getMotorTemperature());
-    layout.add("(Turn) Applied Duty Cycle", turningSparkMax.getAppliedOutput());
-    layout.add("(Turn) Temperature", turningSparkMax.getMotorTemperature());
+//    layout.add("Driving PID Controller", drivingPIDController);
+//    layout.add("Turning PID Controller", turningPIDController);
+    layout.addNumber("(Drive) Applied Duty Cycle", drivingSparkMax::getAppliedOutput);
+    layout.addNumber("(Drive) Temperature", drivingSparkMax::getMotorTemperature);
+    layout.addNumber("(Turn) Applied Duty Cycle", turningSparkMax::getAppliedOutput);
+    layout.addNumber("(Turn) Temperature", turningSparkMax::getMotorTemperature);
     layout.withSize(3, 8);
   }
 

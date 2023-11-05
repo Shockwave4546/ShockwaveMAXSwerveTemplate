@@ -80,20 +80,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    GlobalTab.DEBUG.addNumber("Front Left Angle", () -> frontLeft.getState().angle.getDegrees());
-    GlobalTab.DEBUG.addNumber("Front Right Angle", () -> frontRight.getState().angle.getDegrees());
-    GlobalTab.DEBUG.addNumber("Back Left Angle", () -> backLeft.getState().angle.getDegrees());
-    GlobalTab.DEBUG.addNumber("Back Right Angle", () -> backRight.getState().angle.getDegrees());
-    GlobalTab.DEBUG.addNumber("Gyro Angle Degrees", () -> gyro.getAngle());
+
   }
 
   @Override public void periodic() {
-    if (frontRight.turningPIDController.getP() != pTurn.get()) {
-      frontRight.turningPIDController.setP(pTurn.get());
-      frontLeft.turningPIDController.setP(pTurn.get());
-      backRight.turningPIDController.setP(pTurn.get());
-      backLeft.turningPIDController.setP(pTurn.get());
-    }
+//    if (frontRight.turningPIDController.getP() != pTurn.get()) {
+//      frontRight.turningPIDController.setP(pTurn.get());
+//      frontLeft.turningPIDController.setP(pTurn.get());
+//      backRight.turningPIDController.setP(pTurn.get());
+//      backLeft.turningPIDController.setP(pTurn.get());
+//    }
 
     // Update the odometry in the periodic block
     odometry.update(
