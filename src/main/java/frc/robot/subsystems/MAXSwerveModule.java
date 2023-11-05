@@ -13,6 +13,7 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import frc.robot.Constants.ModuleConstants;
 
 public class MAXSwerveModule {
@@ -20,7 +21,7 @@ public class MAXSwerveModule {
   private final AbsoluteEncoder turningEncoder;
 
   private final SparkMaxPIDController drivingPIDController;
-  public final SparkMaxPIDController turningPIDController;
+  private final SparkMaxPIDController turningPIDController;
 
   private final double chassisAngularOffset;
   private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
@@ -32,7 +33,7 @@ public class MAXSwerveModule {
    * Encoder.
    */
   @SuppressWarnings("resource")
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, boolean invertDrivingDirection) {
+  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, boolean invertDrivingDirection, ShuffleboardLayout layout) {
     final var drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     final var turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
 
@@ -106,6 +107,16 @@ public class MAXSwerveModule {
     this.chassisAngularOffset = chassisAngularOffset;
     desiredState.angle = new Rotation2d(turningEncoder.getPosition());
     drivingEncoder.setPosition(0);
+
+    layout.add("Drive ID", drivingCANId);
+    layout.add("Turn ID", turningCANId);
+    layout.add("Driving PID Controller", drivingPIDController);
+    layout.add("Turning PID Controller", turningPIDController);
+    layout.add("(Drive) Applied Duty Cycle", drivingSparkMax.getAppliedOutput());
+    layout.add("(Drive) Temperature", drivingSparkMax.getMotorTemperature());
+    layout.add("(Turn) Applied Duty Cycle", turningSparkMax.getAppliedOutput());
+    layout.add("(Turn) Temperature", turningSparkMax.getMotorTemperature());
+    layout.withSize(3, 8);
   }
 
   /**

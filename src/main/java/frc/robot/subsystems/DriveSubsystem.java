@@ -10,6 +10,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.shuffleboard.GlobalTab;
@@ -17,29 +20,38 @@ import frc.shuffleboard.ShuffleboardDouble;
 import frc.utils.SwerveUtils;
 
 public class DriveSubsystem extends SubsystemBase {
+  private final ShuffleboardTab tab = Shuffleboard.getTab("DriveSubsystem");
   private final MAXSwerveModule frontLeft = new MAXSwerveModule(
           DriveConstants.FRONT_LEFT_DRIVING_CAN_ID,
           DriveConstants.FRONT_LEFT_TURNING_CAN_ID,
           DriveConstants.FRONT_LEFT_CHASSIS_ANGULAR_OFFSET,
-          false);
+          false,
+          tab.getLayout("Front Left", BuiltInLayouts.kList)
+  );
 
   private final MAXSwerveModule frontRight = new MAXSwerveModule(
           DriveConstants.FRONT_RIGHT_DRIVING_CAN_ID,
           DriveConstants.FRONT_RIGHT_TURNING_CAN_ID,
           DriveConstants.FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET,
-          true);
+          true,
+          tab.getLayout("Front Right", BuiltInLayouts.kList)
+  );
 
   private final MAXSwerveModule backLeft = new MAXSwerveModule(
           DriveConstants.BACK_LEFT_DRIVING_CAN_ID,
           DriveConstants.BACK_LEFT_TURNING_CAN_ID,
           DriveConstants.BACK_LEFT_CHASSIS_ANGULAR_OFFSET,
-          false);
+          false,
+          tab.getLayout("Back Left", BuiltInLayouts.kList)
+  );
 
   private final MAXSwerveModule backRight = new MAXSwerveModule(
           DriveConstants.BACK_RIGHT_DRIVING_CAN_ID,
           DriveConstants.BACK_RIGHT_TURNING_CAN_ID,
           DriveConstants.BACK_RIGHT_CHASSIS_ANGULAR_OFFSET,
-          true);
+          true,
+          tab.getLayout("Back Right", BuiltInLayouts.kList)
+  );
 
   // The gyro sensor
   private final AHRS gyro = new AHRS();
