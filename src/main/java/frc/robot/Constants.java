@@ -34,9 +34,9 @@ public final class Constants {
     public static final double ROTATIONAL_SLEW_RATE = 2.0; // percent per second (1 = 100%)
 
     // Chassis configuration
-    public static final double TRACK_WIDTH = Units.inchesToMeters(26.5);
+    public static final double TRACK_WIDTH = Units.inchesToMeters(32);
     // Distance between centers of right and left wheels on robot
-    public static final double WHEEL_BASE = Units.inchesToMeters(26.5);
+    public static final double WHEEL_BASE = Units.inchesToMeters(32);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
             new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
@@ -114,7 +114,7 @@ public final class Constants {
     public static final double DRIVING_MIN_OUTPUT = -1;
     public static final double DRIVING_MAX_OUTPUT = 1;
 
-    public static final double TURNING_P = 0.5;
+    public static final double TURNING_P = 0.1;
     public static final double TURNING_I = 0;
     public static final double TURNING_D = 0;
     public static final double TURNING_FF = 0;

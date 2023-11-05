@@ -18,9 +18,12 @@ public class RobotContainer {
     GlobalTab.DEBUG.add("Set Rot", new RunCommand(() -> {
       drive.setAngleDegrees(wantAngle.get());
     }, drive));
+
+    
   }
 
   private void configureButtonBindings() {
+    driverController.a().onTrue(new RunCommand(() -> { drive.setX(); }, drive));
     // TODO: 10/28/2023
   }
 

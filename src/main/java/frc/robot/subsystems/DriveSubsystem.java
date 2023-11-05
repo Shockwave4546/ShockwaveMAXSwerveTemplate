@@ -12,28 +12,34 @@ import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.shuffleboard.GlobalTab;
+import frc.shuffleboard.ShuffleboardDouble;
 import frc.utils.SwerveUtils;
 
 public class DriveSubsystem extends SubsystemBase {
   private final MAXSwerveModule frontLeft = new MAXSwerveModule(
           DriveConstants.FRONT_LEFT_DRIVING_CAN_ID,
           DriveConstants.FRONT_LEFT_TURNING_CAN_ID,
-          DriveConstants.FRONT_LEFT_CHASSIS_ANGULAR_OFFSET);
+          DriveConstants.FRONT_LEFT_CHASSIS_ANGULAR_OFFSET,
+          false);
 
   private final MAXSwerveModule frontRight = new MAXSwerveModule(
           DriveConstants.FRONT_RIGHT_DRIVING_CAN_ID,
           DriveConstants.FRONT_RIGHT_TURNING_CAN_ID,
-          DriveConstants.FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET);
+          DriveConstants.FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET,
+          true);
 
   private final MAXSwerveModule backLeft = new MAXSwerveModule(
           DriveConstants.BACK_LEFT_DRIVING_CAN_ID,
           DriveConstants.BACK_LEFT_TURNING_CAN_ID,
-          DriveConstants.BACK_LEFT_CHASSIS_ANGULAR_OFFSET);
+          DriveConstants.BACK_LEFT_CHASSIS_ANGULAR_OFFSET,
+          false);
 
   private final MAXSwerveModule backRight = new MAXSwerveModule(
           DriveConstants.BACK_RIGHT_DRIVING_CAN_ID,
           DriveConstants.BACK_RIGHT_TURNING_CAN_ID,
-          DriveConstants.BACK_RIGHT_CHASSIS_ANGULAR_OFFSET);
+          DriveConstants.BACK_RIGHT_CHASSIS_ANGULAR_OFFSET,
+          true);
 
   // The gyro sensor
   private final AHRS gyro = new AHRS();
@@ -58,12 +64,25 @@ public class DriveSubsystem extends SubsystemBase {
                   backRight.getPosition()
           });
 
+  private final ShuffleboardDouble pTurn = new ShuffleboardDouble("Turning P", 0.1);
+
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-
+    GlobalTab.DEBUG.addNumber("Front Left Angle", () -> frontLeft.getState().angle.getDegrees());
+    GlobalTab.DEBUG.addNumber("Front Right Angle", () -> frontRight.getState().angle.getDegrees());
+    GlobalTab.DEBUG.addNumber("Back Left Angle", () -> backLeft.getState().angle.getDegrees());
+    GlobalTab.DEBUG.addNumber("Back Right Angle", () -> backRight.getState().angle.getDegrees());
+    GlobalTab.DEBUG.addNumber("Gyro Angle Degrees", () -> gyro.getAngle());
   }
 
   @Override public void periodic() {
+    if (frontRight.turningPIDController.getP() != pTurn.get()) {
+      frontRight.turningPIDController.setP(pTurn.get());
+      frontLeft.turningPIDController.setP(pTurn.get());
+      backRight.turningPIDController.setP(pTurn.get());
+      backLeft.turningPIDController.setP(pTurn.get());
+    }
+
     // Update the odometry in the periodic block
     odometry.update(
             Rotation2d.fromDegrees(gyro.getAngle()),

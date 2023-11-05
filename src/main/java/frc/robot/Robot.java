@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.SwerveDriveCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -75,7 +76,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
+    container.drive.setDefaultCommand(new SwerveDriveCommand(container.driverController, container.drive));
   }
 
   /** This function is called periodically during operator control. */

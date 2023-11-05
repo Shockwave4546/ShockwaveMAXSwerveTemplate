@@ -13,14 +13,15 @@ public class SwerveDriveCommand extends CommandBase {
   public SwerveDriveCommand(CommandXboxController controller, DriveSubsystem drive) {
     this.controller = controller;
     this.drive = drive;
+    addRequirements(drive);
   }
 
-  @Override public void initialize() {
+  @Override public void execute() {
     drive.drive(
-            -MathUtil.applyDeadband(controller.getLeftY(), IOConstants.DRIVE_DEADBAND),
-            -MathUtil.applyDeadband(controller.getLeftX(), IOConstants.DRIVE_DEADBAND),
-            -MathUtil.applyDeadband(controller.getRightX(), IOConstants.DRIVE_DEADBAND),
-            true,
+            MathUtil.applyDeadband(-controller.getLeftY(), IOConstants.DRIVE_DEADBAND),
+            MathUtil.applyDeadband(-controller.getLeftX(), IOConstants.DRIVE_DEADBAND),
+            MathUtil.applyDeadband(-controller.getRightX(), IOConstants.DRIVE_DEADBAND),
+            false,
             true
     );
   }

@@ -20,7 +20,7 @@ public class MAXSwerveModule {
   private final AbsoluteEncoder turningEncoder;
 
   private final SparkMaxPIDController drivingPIDController;
-  private final SparkMaxPIDController turningPIDController;
+  public final SparkMaxPIDController turningPIDController;
 
   private final double chassisAngularOffset;
   private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
@@ -32,7 +32,7 @@ public class MAXSwerveModule {
    * Encoder.
    */
   @SuppressWarnings("resource")
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
+  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, boolean invertDrivingDirection) {
     final var drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     final var turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
 
@@ -40,6 +40,8 @@ public class MAXSwerveModule {
     // them. This is useful in case a SPARK MAX is swapped out.
     drivingSparkMax.restoreFactoryDefaults();
     turningSparkMax.restoreFactoryDefaults();
+
+    drivingSparkMax.setInverted(invertDrivingDirection);
 
     // Setup encoders and PID controllers for the driving and turning SPARKS MAX.
     drivingEncoder = drivingSparkMax.getEncoder();
