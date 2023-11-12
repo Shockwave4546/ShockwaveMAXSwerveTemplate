@@ -79,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-     GlobalTab.MATCH.addNumber("Gyro Rotation (Degrees)", gyro::getAngle);
+     GlobalTab.MATCH.add("Gyro", gyro);
   }
 
   @Override public void periodic() {
