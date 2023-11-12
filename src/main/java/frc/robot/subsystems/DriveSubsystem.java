@@ -26,7 +26,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.FRONT_LEFT_TURNING_CAN_ID,
           DriveConstants.FRONT_LEFT_CHASSIS_ANGULAR_OFFSET,
           false,
-          tab.getLayout("Front Left", BuiltInLayouts.kList)
+          Shuffleboard.getTab("Front Left Motors")
   );
 
   private final MAXSwerveModule frontRight = new MAXSwerveModule(
@@ -34,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.FRONT_RIGHT_TURNING_CAN_ID,
           DriveConstants.FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET,
           true,
-          tab.getLayout("Front Right", BuiltInLayouts.kList)
+          Shuffleboard.getTab("Front Right Motor")
   );
 
   private final MAXSwerveModule backLeft = new MAXSwerveModule(
@@ -42,7 +42,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.BACK_LEFT_TURNING_CAN_ID,
           DriveConstants.BACK_LEFT_CHASSIS_ANGULAR_OFFSET,
           false,
-          tab.getLayout("Back Left", BuiltInLayouts.kList)
+          Shuffleboard.getTab("Back Left Motors")
   );
 
   private final MAXSwerveModule backRight = new MAXSwerveModule(
@@ -50,7 +50,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.BACK_RIGHT_TURNING_CAN_ID,
           DriveConstants.BACK_RIGHT_CHASSIS_ANGULAR_OFFSET,
           true,
-          tab.getLayout("Back Right", BuiltInLayouts.kList)
+          Shuffleboard.getTab("Back Right Motors")
   );
 
   // The gyro sensor
@@ -79,9 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    // final var layout = tab.getLayout("Information");
-    // layout.addNumber("Current Rotation (Degrees)", () -> Math.toDegrees(currentRotation));
-
+     GlobalTab.MATCH.addNumber("Gyro Rotation (Degrees)", gyro::getAngle);
   }
 
   @Override public void periodic() {
