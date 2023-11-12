@@ -18,7 +18,6 @@ import frc.shuffleboard.GlobalTab;
 import frc.utils.SwerveUtils;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final ShuffleboardTab tab = Shuffleboard.getTab("DriveSubsystem");
   private final MAXSwerveModule frontLeft = new MAXSwerveModule(
           DriveConstants.FRONT_LEFT_DRIVING_CAN_ID,
           DriveConstants.FRONT_LEFT_TURNING_CAN_ID,
@@ -31,8 +30,8 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.FRONT_RIGHT_DRIVING_CAN_ID,
           DriveConstants.FRONT_RIGHT_TURNING_CAN_ID,
           DriveConstants.FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET,
-          true,
-          Shuffleboard.getTab("Front Right Motor")
+          false,
+          Shuffleboard.getTab("Front Right Motors")
   );
 
   private final MAXSwerveModule backLeft = new MAXSwerveModule(
@@ -47,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.BACK_RIGHT_DRIVING_CAN_ID,
           DriveConstants.BACK_RIGHT_TURNING_CAN_ID,
           DriveConstants.BACK_RIGHT_CHASSIS_ANGULAR_OFFSET,
-          true,
+          false,
           Shuffleboard.getTab("Back Right Motors")
   );
 

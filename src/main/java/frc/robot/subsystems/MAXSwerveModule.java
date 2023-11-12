@@ -112,14 +112,15 @@ public class MAXSwerveModule {
     /*
      * For debugging
      */
-    tab.add("(Driving) ID", drivingCANId).withPosition(0, 0).withSize(2, 2);
+    tab.add("(Driving) ID", drivingCANId);
     tab.addNumber("(Driving Applied Duty Cycle", drivingSparkMax::getAppliedOutput);
     tab.addNumber("(Driving) Applied Amperage", drivingSparkMax::getOutputCurrent);
     tab.addNumber("(Driving) Temperature (C)", drivingSparkMax::getMotorTemperature);
     tab.add("(Driving) PID Controller", new TunableSparkMaxPIDController(drivingPIDController));
 
     tab.add("(Turning) ID", turningCANId);
-    tab.addNumber("(Turning) Relative Angle (Degrees)", getPosition().angle::getDegrees);
+    // TOOD: Lowk this angle measurement in degrees is kinda bad.
+    tab.addNumber("(Turning) Relative Angle (Degrees)", () -> Math.toDegrees(turningEncoder.getPosition() - chassisAngularOffset));
     tab.addNumber("(Turning) Applied Duty Cycle", turningSparkMax::getAppliedOutput);
     tab.addNumber("(Turning) Applied Amperage", turningSparkMax::getOutputCurrent);
     tab.addNumber("(Turning) Temperature (C)", turningSparkMax::getMotorTemperature);

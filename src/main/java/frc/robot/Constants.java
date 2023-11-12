@@ -28,7 +28,7 @@ public final class Constants {
     // the robot, rather the allowed maximum speeds
 
     // TODO: 11/5/2023 Remove multiplier when the robot is good.
-    public static final double MAX_SPEED_METERS_PER_SECOND = 4.8 * 0.5;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 4.8;
     public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
 
     public static final double DIRECTION_SLEW_RATE = 1.2; // radians per second
@@ -116,7 +116,7 @@ public final class Constants {
     public static final double DRIVING_MIN_OUTPUT = -1;
     public static final double DRIVING_MAX_OUTPUT = 1;
 
-    public static final double TURNING_P = 1.0;
+    public static final double TURNING_P = 0.40;
     public static final double TURNING_I = 0;
     public static final double TURNING_D = 0;
     public static final double TURNING_FF = 0;
@@ -132,7 +132,7 @@ public final class Constants {
 
   public static final class IOConstants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
-    public static final double DRIVE_DEADBAND = 0.05;
+    public static final double DRIVE_DEADBAND = 0.02;
   }
 
   public static final class AutoConstants {
