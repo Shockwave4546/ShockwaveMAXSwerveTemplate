@@ -3,8 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.IOConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.shuffleboard.GlobalTab;
+import frc.shuffleboard.ShuffleboardSpeed;
 
 public class SwerveDriveCommand extends CommandBase {
   private final CommandXboxController controller;
@@ -19,10 +22,10 @@ public class SwerveDriveCommand extends CommandBase {
   @Override public void execute() {
     // TODO: 11/5/2023 Don't use rate limiting for now (leads to weird feeling control).  
     drive.drive(
-            MathUtil.applyDeadband(controller.getLeftY(), IOConstants.DRIVE_DEADBAND),
-            MathUtil.applyDeadband(controller.getLeftX(), IOConstants.DRIVE_DEADBAND),
+            MathUtil.applyDeadband(controller.getLeftY() * RobotContainer.SPEED_MULT.get(), IOConstants.DRIVE_DEADBAND),
+            MathUtil.applyDeadband(controller.getLeftX() * RobotContainer.SPEED_MULT.get(), IOConstants.DRIVE_DEADBAND),
             MathUtil.applyDeadband(controller.getRightX(), IOConstants.DRIVE_DEADBAND),
-            false,
+            true,
             false
     );
   }

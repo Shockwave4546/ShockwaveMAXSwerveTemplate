@@ -4,17 +4,20 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IOConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.shuffleboard.GlobalTab;
+import frc.shuffleboard.ShuffleboardSpeed;
 
 public class RobotContainer {
   protected final DriveSubsystem drive = new DriveSubsystem();
   protected final CommandXboxController driverController = new CommandXboxController(IOConstants.DRIVER_CONTROLLER_PORT);
+  public static final ShuffleboardSpeed SPEED_MULT = new ShuffleboardSpeed(GlobalTab.MATCH, "Speed MUlt", 0.8);
 
   public RobotContainer() {
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
-    driverController.a().onTrue(new RunCommand(drive::setX, drive));
+    driverController.a().onTrue(new RunCommand(drive::zeroHeading, drive));
   }
 
 //  /**

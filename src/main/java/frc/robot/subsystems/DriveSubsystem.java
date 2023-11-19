@@ -22,7 +22,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.FRONT_LEFT_DRIVING_CAN_ID,
           DriveConstants.FRONT_LEFT_TURNING_CAN_ID,
           DriveConstants.FRONT_LEFT_CHASSIS_ANGULAR_OFFSET,
-          false,
+          true,
           Shuffleboard.getTab("Front Left Motors")
   );
 
@@ -30,7 +30,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.FRONT_RIGHT_DRIVING_CAN_ID,
           DriveConstants.FRONT_RIGHT_TURNING_CAN_ID,
           DriveConstants.FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET,
-          false,
+          true,
           Shuffleboard.getTab("Front Right Motors")
   );
 
@@ -38,7 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.BACK_LEFT_DRIVING_CAN_ID,
           DriveConstants.BACK_LEFT_TURNING_CAN_ID,
           DriveConstants.BACK_LEFT_CHASSIS_ANGULAR_OFFSET,
-          false,
+          true,
           Shuffleboard.getTab("Back Left Motors")
   );
 
@@ -46,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.BACK_RIGHT_DRIVING_CAN_ID,
           DriveConstants.BACK_RIGHT_TURNING_CAN_ID,
           DriveConstants.BACK_RIGHT_CHASSIS_ANGULAR_OFFSET,
-          false,
+          true,
           Shuffleboard.getTab("Back Right Motors")
   );
 
@@ -65,7 +65,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
           DriveConstants.DRIVE_KINEMATICS,
-          Rotation2d.fromDegrees(gyro.getAngle()),
+          Rotation2d.fromDegrees(-gyro.getAngle()),
           new SwerveModulePosition[] {
                   frontLeft.getPosition(),
                   frontRight.getPosition(),
@@ -76,14 +76,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    zeroHeading();
+    // zeroHeading();
     GlobalTab.MATCH.add("Gyro", gyro);
   }
 
   @Override public void periodic() {
     // Update the odometry in the periodic block
     odometry.update(
-            Rotation2d.fromDegrees(gyro.getAngle()),
+            Rotation2d.fromDegrees(-gyro.getAngle()),
             new SwerveModulePosition[] {
                     frontLeft.getPosition(),
                     frontRight.getPosition(),
@@ -115,7 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(
-            Rotation2d.fromDegrees(gyro.getAngle()),
+            Rotation2d.fromDegrees(-gyro.getAngle()),
             new SwerveModulePosition[] {
                     frontLeft.getPosition(),
                     frontRight.getPosition(),
@@ -194,10 +194,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     var swerveModuleStates = DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
             fieldRelative
-                    ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getAngle()))
+                    ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(-gyro.getAngle()))
                     : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
             swerveModuleStates, DriveConstants.MAX_SPEED_METERS_PER_SECOND);
+
+
     frontLeft.setDesiredState(swerveModuleStates[0]);
     frontRight.setDesiredState(swerveModuleStates[1]);
     backLeft.setDesiredState(swerveModuleStates[2]);
@@ -247,7 +249,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(gyro.getAngle()).getDegrees();
+    return Rotation2d.fromDegrees(-gyro.getAngle()).getDegrees();
   }
 
   /**
